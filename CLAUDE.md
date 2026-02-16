@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Documentation-First Rule
+
+**ALWAYS** consult the relevant docs file(s) in the `/docs` directory before generating any code. The `/docs` directory contains project-specific documentation that must be used as the primary reference for implementation decisions, patterns, and API usage. If a docs file covers the area you are working on, follow it exactly.
+
 ## Build & Development Commands
 
 - `npm run dev` — Start development server (Next.js, default port 3000)
