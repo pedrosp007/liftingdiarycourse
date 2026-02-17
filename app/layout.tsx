@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import {
   ClerkProvider,
   SignInButton,
@@ -8,6 +9,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,14 +38,29 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <header className="flex justify-end items-center p-4 gap-4">
-            <SignedOut>
-              <SignInButton mode="modal" />
-              <SignUpButton mode="modal" />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+          <header className="flex items-center justify-between p-4">
+            <nav className="flex items-center gap-2">
+              <Link href="/" className="text-lg font-semibold mr-4">
+                Lifting Diary
+              </Link>
+              <Button variant="ghost" asChild>
+                <Link href="/">Home</Link>
+              </Button>
+              <SignedIn>
+                <Button variant="ghost" asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+              </SignedIn>
+            </nav>
+            <div className="flex items-center gap-4">
+              <SignedOut>
+                <SignInButton mode="modal" />
+                <SignUpButton mode="modal" />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </header>
           {children}
         </body>
