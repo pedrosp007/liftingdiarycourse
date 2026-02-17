@@ -48,4 +48,9 @@ All UI composition should happen directly in the `app/` directory files (pages, 
 | Button | `components/ui/button.tsx` |
 | Calendar | `components/ui/calendar.tsx` |
 | Card | `components/ui/card.tsx` |
+| Checkbox | `components/ui/checkbox.tsx` |
+| Dialog | `components/ui/dialog.tsx` |
+| Input | `components/ui/input.tsx` |
+| Label | `components/ui/label.tsx` |
 | Popover | `components/ui/popover.tsx` |
+| Textarea | `components/ui/textarea.tsx` |

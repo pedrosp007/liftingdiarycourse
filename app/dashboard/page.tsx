@@ -7,7 +7,9 @@ import Link from "next/link"
 import { db } from "@/db"
 import { workouts, workoutExercises, exercises, sets } from "@/db/schema"
 import { getRecentWorkouts } from "@/data/workouts"
+import { getExercises } from "@/data/exercises"
 import { DatePicker } from "@/components/date-picker"
+import { CreateWorkoutDialog } from "@/components/create-workout-dialog"
 import {
   Card,
   CardContent,
@@ -29,6 +31,8 @@ export default async function DashboardPage({
   const params = await searchParams
   const dateStr = params.date
 
+  const userExercises = await getExercises()
+
   if (!dateStr) {
     const recentWorkouts = await getRecentWorkouts()
 
@@ -36,7 +40,10 @@ export default async function DashboardPage({
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <DatePicker />
+          <div className="flex items-center gap-2">
+            <DatePicker />
+            <CreateWorkoutDialog exercises={userExercises} />
+          </div>
         </div>
 
         <h2 className="mb-4 text-lg font-semibold">Recent Workouts</h2>
@@ -87,7 +94,10 @@ export default async function DashboardPage({
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <DatePicker date={selectedDate} />
+        <div className="flex items-center gap-2">
+          <DatePicker date={selectedDate} />
+          <CreateWorkoutDialog exercises={userExercises} />
+        </div>
       </div>
 
       {userWorkouts.length === 0 ? (
