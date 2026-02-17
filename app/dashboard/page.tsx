@@ -2,9 +2,11 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { eq, and } from "drizzle-orm"
 import { format } from "date-fns"
+import Link from "next/link"
 
 import { db } from "@/db"
 import { workouts, workoutExercises, exercises, sets } from "@/db/schema"
+import { getRecentWorkouts } from "@/data/workouts"
 import { DatePicker } from "@/components/date-picker"
 import {
   Card,
@@ -25,7 +27,45 @@ export default async function DashboardPage({
   }
 
   const params = await searchParams
-  const dateStr = params.date ?? format(new Date(), "yyyy-MM-dd")
+  const dateStr = params.date
+
+  if (!dateStr) {
+    const recentWorkouts = await getRecentWorkouts()
+
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-8">
+        <div className="mb-8 flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <DatePicker />
+        </div>
+
+        <h2 className="mb-4 text-lg font-semibold">Recent Workouts</h2>
+
+        {recentWorkouts.length === 0 ? (
+          <p className="text-muted-foreground">No workouts logged yet.</p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {recentWorkouts.map((workout) => (
+              <Link
+                key={workout.id}
+                href={`/dashboard?date=${workout.date}`}
+              >
+                <Card className="transition-colors hover:bg-muted/50">
+                  <CardHeader>
+                    <CardTitle>{workout.name}</CardTitle>
+                    <CardDescription>
+                      {format(new Date(workout.date + "T00:00:00"), "MMMM d, yyyy")}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   const selectedDate = new Date(dateStr + "T00:00:00")
 
   const userWorkouts = await db.query.workouts.findMany({
